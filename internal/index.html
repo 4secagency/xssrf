@@ -1,0 +1,159 @@
+<html>
+<head>
+    <title></title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        function updateQueue(pos) {
+            if (pos < 1) {
+                document.getElementsByClassName("queue")[0].remove();
+                if (queueInterval !== undefined) {
+                    clearInterval(queueInterval);
+                }
+                return;
+            }
+            document.getElementById("queueCounter").textContent = "" + pos;
+        }
+        let initDone = false;
+        let queueInterval;
+        function init() {
+            const socket = io.connect();
+            [
+                {
+                    target: window,
+                    event: "resize",
+                    properties: e => {
+                        return {
+                            width: window.innerWidth,
+                            height: window.innerHeight
+                        }
+                    }
+                },
+                {
+                    event: [
+                        "mousemove", "mousedown", "mouseup", "click", "doubleclick"
+                    ],
+                    properties: [
+                        "screenX", "screenY", "clientX", "clientY", "x", "y", "which"
+                    ]
+                },
+                {
+                    event: [
+                        "keydown", "keyup", "keypress"
+                    ],
+                    properties: [
+                        "key", "which", "code", "altKey", "ctrlKey", "shiftKey", "metaKey"
+                    ]
+                },
+                // TODO: Add touch and scroll events
+            ].forEach(event => {
+                if (typeof event !== typeof {}) {
+                    return;
+                }
+                if (typeof event.event === typeof "") {
+                    event.event = [event.event];
+                }
+                if (!Array.isArray(event.event)) {
+                    return;
+                }
+                event.event.forEach(name => {
+                    const target = (event.target || document);
+                    if (target === undefined || typeof target.addEventListener !== typeof function(){}) {
+                        return;
+                    }
+                    target.addEventListener(name, e => {
+                        e.preventDefault();
+                        if (!initDone) {
+                            return;
+                        }
+                        const copy = {
+                            type: e.type
+                        };
+                        if (event.properties === undefined) {
+                            for (let k in e) {
+                                copy[k] = e[k];
+                            }
+                        } else if (typeof event.properties === typeof function(){}) {
+                            const properties = event.properties(e);
+                            for (let k in properties) {
+                                copy[k] = properties[k];
+                            }
+                        } else {
+                            for (let k in e) {
+                                if (event.properties.indexOf(k) >= 0) {
+                                    copy[k] = e[k];
+                                }
+                            }
+                        }
+                        socket.emit("event", copy);
+                    });
+                });
+            });
+            socket.on("update", (base64, title, cursor) => {
+                document.body.style.backgroundImage = "url('data:image/png;base64," + base64 + "')";
+                document.title = title;
+                document.body.style.cursor = cursor;
+            });
+            socket.on("init", () => {
+                updateQueue(0);
+                initDone = true;
+                socket.emit("init", window.innerWidth, window.innerHeight, window.location.href);
+                window.history.replaceState({
+                    url: "",
+                }, "");
+            });
+            socket.on("alert", (id, text) => {
+                socket.emit("alert", id, alert(text));
+            });
+            socket.on("confirm", (id, text) => {
+                socket.emit("confirm", id, confirm(text));
+            });
+            socket.on("prompt", (id, text, def) => {
+                socket.emit("prompt", id, prompt(text, def));
+            });
+            socket.on("enqueued", (pos) => {
+                updateQueue(pos);
+                queueInterval = setInterval(() => {
+                    socket.emit("queuepos");
+                }, 5000);
+            });
+            socket.on("queuepos", (pos) => {
+                updateQueue(pos);
+            });
+            socket.on("url", (url) => {
+                console.log(url)
+                window.history.pushState({
+                    url: url,
+                }, "", url);
+            });
+            window.addEventListener('popstate', (e) => {
+                const url = e.state.url || null;
+                if (url !== null) {
+                    socket.emit("url", url);
+                }
+            })
+        }
+    </script>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-size: auto;
+            background-position: left top;
+            background-repeat: no-repeat;
+        }
+
+        .queue {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body onload="init()"><div class="queue">Queue position&nbsp;<span id="queueCounter">-1</span></div></body>
+</html>

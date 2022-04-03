@@ -1,0 +1,275 @@
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #f1f1f1;
+    color: #555555;
+    font-family: "Helvetica Neue",Arial,sans-serif;
+}
+
+pre {
+    overflow-x: auto;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+a.link:link, a.link:visited {
+    display: inline-block;
+    padding: 4px 0;
+    text-decoration: none;
+}
+
+a.link:hover, a.link:active {
+    border: none !important;
+    margin-bottom: 1px;
+}
+
+button {
+    padding: 8px 30px;
+    border-radius: 0;
+    margin: 4px;
+}
+
+a:link button {
+    cursor: pointer;
+}
+
+button:hover, button:active, button:focus {
+    box-shadow: 0 10px 20px 0 rgba(1,1,1,.15);
+    outline: none;
+}
+
+.cover button {
+    border: 1px solid #f1f1f1;
+    background-color: #f1f1f1;
+}
+
+.cover button.primary {
+    color: #006799;
+    background-color: #f1f1f1;
+}
+
+.cover button.secondary {
+    color: #f1f1f1;
+    background-color: #006799;
+}
+
+.cover a.link:link, .cover a.link:visited {
+    border-bottom: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.page button {
+    border: 1px solid #006799;
+    background-color: #006799;
+}
+
+.page button.primary {
+    color: #ffffff;
+    background-color: #006799;
+}
+
+.page button.secondary {
+    color: #006799;
+    background-color: #ffffff;
+}
+
+.page a.link:link, .page a.link:visited {
+    border-bottom: 1px solid #aaaaaa;
+    color: #aaaaaa;
+}
+
+.cover {
+    height: 100%;
+    background-color: #006799;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 100px;
+}
+
+.cover.small {
+    height: auto;
+    min-height: 100px;
+}
+
+.cover .header {
+    position: absolute;
+    top: 0;
+    margin: 20px 0;
+    height: 40px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    line-height: 40px;
+    box-sizing: border-box;
+}
+
+.cover .header .logo {
+    font-weight: bolder;
+}
+
+.cover .header .menu {
+    flex-grow: 1;
+    text-align: right;
+    display: inline-block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cover .header .menu li {
+    display: inline-block;
+    margin: 0;
+    height: 100%;
+}
+
+.cover .header .menu li a {
+    display: inline-block;
+    margin: 0;
+    padding: 0 20px;
+    cursor: pointer;
+    height: 100%;
+}
+
+.cover .header .login {
+    display: inline-block;
+    height: 100%;
+    padding: 8px 16px;
+    margin-left: 30px;
+    box-sizing: border-box;
+}
+
+.cover .header .login img {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+.cover .header .menu li:hover, .cover .header .login:hover {
+    background-color: rgba(1, 1, 1, .05);
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,.15);
+}
+
+.cover > .content {
+    text-align: center;
+    padding: 0 20px;
+}
+
+.content {
+    max-width: 960px;
+    width: 100%;
+}
+
+.page {
+    padding: 0 20px;
+    padding-top: 200px;
+    margin: -100px auto 0 auto;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.page > .content {
+    margin: -200px auto 20px auto;
+    background-color: #ffffff;
+    box-shadow: 0 30px 50px 0 rgba(1,1,1,.15);
+    box-sizing: border-box;
+    padding: 40px 50px;
+}
+
+.page > .content > .article {
+    position: relative;
+    margin-bottom: 120px;
+    padding-bottom: 60px;
+}
+
+.page > .content > .article:last-of-type {
+    margin-bottom: 0;
+}
+
+.page > .content > .article:after {
+    content: "";
+    display: block;
+    width: 100px;
+    border-bottom: 1px solid #aaaaaa;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -50px;
+}
+
+.page > .content > .article:last-of-type:after {
+    display: none;
+}
+
+.article > .title {
+    display: block;
+    font-size: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #006799;
+}
+
+.article > .info {
+    font-size: 12px;
+    font-weight: 400;
+    color: #aaaaaa;
+    margin-bottom: 6px;
+}
+
+.article > .content {
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.article > .tags {
+    list-style: none;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.article > .tags:before {
+    content: "Tags";
+    display: block;
+    margin-bottom: 4px;
+}
+
+.article > .tags li {
+    margin: 0 10px;
+    display: inline-block;
+}
+
+.article > .tags li:first-of-type,
+.article > .tags li:last-of-type {
+    margin: 0;
+}
+
+.article i.sh {
+    font-style: normal;
+    font-weight: 300;
+    font-family: monospace;
+}
+
+.error {
+    color: #af0d00;
+}
+
+.footer {
+    margin-top: 80px;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #aaaaaa;
+}
